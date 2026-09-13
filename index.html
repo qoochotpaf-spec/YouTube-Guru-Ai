@@ -1,41 +1,236 @@
-Make my existing ShortsLens app a real working AI Shorts analyzer.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d1a">
+<title>ShortsLens — AI YouTube Shorts Growth Assistant</title>
+<style>
+:root{--bg:#080c18;--card:#11182a;--card2:#0d1424;--line:#26314b;--text:#f7f8ff;--muted:#9da8c1;--accent:#7657ff;--accent2:#9a83ff;--good:#44d483;--warn:#ffc857;--danger:#ff6b7a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -10%,#28185a 0,#080c18 38%);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}.app{width:min(1100px,100%);margin:auto;padding:14px}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0 14px}.brand{font-size:25px;font-weight:900}.brand span{color:var(--accent2)}.badge{font-size:10px;color:#d9dded;border:1px solid var(--line);background:#11192c;padding:6px 9px;border-radius:99px}
+.hero{text-align:center;padding:30px 10px 24px}.hero h1{font-size:clamp(31px,7vw,56px);line-height:1.02;margin:0 0 12px}.hero h1 span{color:var(--accent2)}.hero p{max-width:700px;margin:auto;color:var(--muted);line-height:1.6}
+.card{background:rgba(17,24,42,.94);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 12px 35px rgba(0,0,0,.18)}.card h2{margin:0 0 14px;font-size:20px}.card h3{margin:20px 0 9px}.muted,.notice{color:var(--muted)}.notice{font-size:12px;line-height:1.55}
+.upload{display:block;border:2px dashed #4b587a;border-radius:18px;padding:30px 15px;text-align:center;cursor:pointer}.upload:hover{border-color:var(--accent2);background:#151c31}.upload .icon{font-size:46px}.upload strong{display:block;font-size:18px;margin:7px}.upload small{color:var(--muted)}#file{display:none}
+.video{display:none;width:100%;max-height:560px;border-radius:15px;background:#000;margin-top:15px}.fileinfo{display:none;margin-top:10px;color:#cbd3e8;font-size:13px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.btn{border:0;border-radius:13px;padding:14px 16px;font-weight:800;cursor:pointer;color:#fff;background:var(--accent)}.btn.secondary{background:#202b48;border:1px solid var(--line)}.btn.danger{background:#40212a}.btn:disabled{opacity:.45;cursor:not-allowed}
+.status{display:none;margin-top:13px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}.bar{height:7px;background:#28334c;border-radius:99px;overflow:hidden;margin-top:9px}.bar i{display:block;width:0;height:100%;background:var(--accent);transition:.35s}
+.results{display:none}.scoregrid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.score{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px}.score small{color:var(--muted)}.score strong{display:block;font-size:24px;margin-top:5px}
+.overall{display:flex;align-items:center;gap:18px}.circle{width:108px;height:108px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0 0%,#27324a 0 100%);position:relative;flex:none}.circle:after{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--card)}.circle span{position:relative;z-index:1;font-size:24px;font-weight:900}
+.highlight{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px;margin:9px 0}.time{color:var(--accent2);font-weight:800}.row{display:flex;justify-content:space-between;gap:10px}.pill{font-size:10px;padding:4px 7px;border-radius:99px;background:#202b48;color:#d3d9e9}
+.tabs{display:flex;gap:7px;overflow:auto;margin-bottom:12px}.tab{white-space:nowrap;border:1px solid var(--line);background:var(--card2);color:#cbd3e7;border-radius:10px;padding:9px 12px;cursor:pointer}.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}.tabcontent{display:none}.tabcontent.active{display:block}
+.copyrow{display:flex;gap:8px;align-items:flex-start}.copyrow .text{flex:1;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:13px;line-height:1.5;white-space:pre-wrap}.copy{border:1px solid var(--line);background:#202b48;color:#fff;border-radius:10px;padding:9px;cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list{padding-left:21px;line-height:1.8}.empty{color:var(--muted);padding:10px 0}.footer{text-align:center;color:#68738d;font-size:12px;padding:25px 5px}
+@media(max-width:720px){.scoregrid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.overall{align-items:flex-start}.app{padding:10px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand">Shorts<span>Lens</span> 🚀</div>
+  <div class="badge">AI SHORTS GROWTH ASSISTANT</div>
+</header>
 
-Keep the current design.
+<section class="hero">
+  <h1>Turn Every <span>Short</span> Into a Better Short.</h1>
+  <p>Upload a 30–60 second Short. ShortsLens is designed to analyze the real content, find the strongest moment, improve retention, and prepare a ready-to-upload package.</p>
+</section>
 
-Connect the upload system to a secure backend and implement real video processing and AI analysis.
+<section class="card">
+  <h2>🎬 Upload Your Short</h2>
+  <label class="upload" for="file">
+    <div class="icon">⬆️</div>
+    <strong>Tap to choose your video</strong>
+    <small>MP4 / WebM / MOV • Recommended 30–60 seconds</small>
+  </label>
+  <input id="file" type="file" accept="video/mp4,video/webm,video/quicktime,video/*">
+  <div id="fileinfo" class="fileinfo"></div>
+  <video id="video" class="video" controls playsinline></video>
+  <div class="actions">
+    <button id="analyze" class="btn" disabled>🔍 ANALYZE MY SHORT</button>
+    <button id="better" class="btn secondary">🚀 MAKE MY SHORT BETTER</button>
+  </div>
+  <div id="status" class="status">
+    <span id="statusText">Preparing...</span>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+  <p class="notice">This file is the complete frontend. Real semantic AI analysis, AI voice generation and server-side video rendering require a backend/API. This page never invents an AI result when no backend is connected.</p>
+</section>
 
-The AI must analyze the actual uploaded 30–60 second video and return:
-- automatic category/topic
-- video summary
-- Hook score
-- Retention score
-- Overall score
-- HPN / Best Moment with timestamp
-- up to 45 real highlights when available
-- weak/drop-off moments
-- Top 3 improvements
-- 5–10 titles + best title
-- optimized description
-- hashtags
-- tags/keywords
-- Hindi/Hinglish/English timestamped voice-over script
-- timestamped editing plan
-- cover/thumbnail advice
-- final ready-to-upload package
+<section id="results" class="results">
+  <div class="card">
+    <h2>📊 Shorts Scorecard</h2>
+    <div class="overall">
+      <div id="circle" class="circle"><span id="overall">—</span></div>
+      <div><strong id="category">Category: Not analyzed</strong><p class="muted" id="summary">Connect a real AI analysis endpoint to populate evidence-based results.</p></div>
+    </div>
+    <br>
+    <div class="scoregrid" id="scores">
+      <div class="score"><small>Hook</small><strong>—</strong></div>
+      <div class="score"><small>Retention</small><strong>—</strong></div>
+      <div class="score"><small>Title</small><strong>—</strong></div>
+      <div class="score"><small>Editing</small><strong>—</strong></div>
+      <div class="score"><small>Cover</small><strong>—</strong></div>
+    </div>
+  </div>
 
-Free Fire/Free Fire MAX should get specialized analysis, but never assume a video is gaming.
+  <div class="card">
+    <h2>🔥 HPN / BEST MOMENT</h2>
+    <div id="hpn" class="highlight empty">The AI should return the strongest evidence-based moment and its exact timestamp here.</div>
+  </div>
 
-IMPORTANT:
-Never invent events, timestamps, scores or statistics.
-Clearly mark uncertain observations.
-Never promise that a video will go viral.
+  <div class="card">
+    <h2>🎯 TOP 3 FIXES</h2>
+    <ol id="fixes" class="list">
+      <li>Connect the real AI video-analysis backend.</li>
+      <li>Use actual frames/audio/transcript evidence.</li>
+      <li>Then prioritize the strongest retention improvements.</li>
+    </ol>
+  </div>
 
-Use secure server-side API keys only.
-Never expose secret keys in frontend code.
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" data-tab="content">Content</button>
+      <button class="tab" data-tab="seo">Title & SEO</button>
+      <button class="tab" data-tab="voice">Voice-over</button>
+      <button class="tab" data-tab="editing">Editing</button>
+    </div>
 
-If real AI video processing, voice generation or video rendering requires an external service, tell me exactly which service and configuration is required. Do not create fake functionality or fake download buttons.
+    <div id="content" class="tabcontent active">
+      <h3>🪝 Hook Analysis</h3>
+      <div id="hook" class="highlight empty">Actual first 1–3 second analysis will appear here.</div>
+      <h3>📈 Retention Analysis</h3>
+      <div id="retention" class="highlight empty">Potential drop-off moments and rewatch potential will appear here.</div>
+      <h3>⚡ Highlights</h3>
+      <div id="highlights"><div class="highlight empty">Up to 45 meaningful highlights can be displayed when enough real moments exist.</div></div>
+    </div>
 
-Test the complete flow:
-Upload → Process → Analyze → HPN → Highlights → Scores → SEO → Voice Script → Editing Plan → Final Package.
+    <div id="seo" class="tabcontent">
+      <h3>🏆 Best Title</h3>
+      <div class="copyrow"><div id="title" class="text">AI-generated best title will appear here.</div><button class="copy" onclick="copyEl('title')">Copy</button></div>
+      <h3>💡 5–10 Title Options</h3>
+      <div id="titles"><div class="highlight empty">Title options will appear after real analysis.</div></div>
+      <h3>📄 Description</h3>
+      <div class="copyrow"><div id="description" class="text">Optimized description will appear here.</div><button class="copy" onclick="copyEl('description')">Copy</button></div>
+      <h3>#️⃣ Hashtags</h3>
+      <div class="copyrow"><div id="hashtags" class="text">Relevant hashtags will appear here.</div><button class="copy" onclick="copyEl('hashtags')">Copy</button></div>
+      <h3>🔎 Tags / Keywords</h3>
+      <div class="copyrow"><div id="tags" class="text">Relevant tags will appear here.</div><button class="copy" onclick="copyEl('tags')">Copy</button></div>
+    </div>
 
-After finishing, tell me exactly what works and what still requires an external service.
+    <div id="voice" class="tabcontent">
+      <h3>🎙️ AI Voice-over</h3>
+      <div class="copyrow"><div id="voiceText" class="text">Timestamped Hindi / Hinglish / English voice-over script will appear here.</div><button class="copy" onclick="copyEl('voiceText')">Copy</button></div>
+      <p class="notice">Actual voice audio requires a compatible voice-generation API. Do not show a fake audio file or fake download.</p>
+    </div>
+
+    <div id="editing" class="tabcontent">
+      <h3>✂️ Timestamped Editing Plan</h3>
+      <div id="editingPlan"><div class="highlight empty">Cuts, zooms, captions, subtitles, pacing and sound recommendations will appear here.</div></div>
+      <p class="notice">Actual edited-video export requires server-side video rendering. This frontend does not fake rendering.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📦 READY TO UPLOAD</h2>
+    <p class="muted">Best title, description, hashtags, tags, HPN, voice-over and editing plan.</p>
+    <button class="btn" onclick="copyAll()">📋 COPY ALL</button>
+  </div>
+</section>
+
+<footer class="footer">ShortsLens • Recommendations can improve content quality and retention potential, but no tool can guarantee virality.</footer>
+</div>
+
+<script>
+const fileInput=document.getElementById('file');
+const video=document.getElementById('video');
+const analyzeBtn=document.getElementById('analyze');
+const result=document.getElementById('results');
+const fileInfo=document.getElementById('fileinfo');
+
+fileInput.addEventListener('change',()=>{
+  const f=fileInput.files[0];
+  if(!f)return;
+  const url=URL.createObjectURL(f);
+  video.src=url;
+  video.style.display='block';
+  fileInfo.style.display='block';
+  fileInfo.textContent=`Selected: ${f.name} • ${(f.size/1024/1024).toFixed(2)} MB`;
+  analyzeBtn.disabled=false;
+});
+
+video.addEventListener('loadedmetadata',()=>{
+  const d=video.duration;
+  const note=d<30?' • Under 30 seconds':(d>60?' • Over 60 seconds':' • Recommended length');
+  fileInfo.textContent+=` • ${formatTime(d)}${note}`;
+});
+
+analyzeBtn.addEventListener('click',()=>{
+  result.style.display='block';
+  result.scrollIntoView({behavior:'smooth'});
+  const status=document.getElementById('status');
+  const text=document.getElementById('statusText');
+  const bar=document.getElementById('bar');
+  const steps=[
+    ['Uploading video...',15],
+    ['Preparing frames/audio...',35],
+    ['Preparing AI analysis request...',60],
+    ['Waiting for secure AI backend...',85],
+    ['Frontend ready — connect your AI endpoint for real results.',100]
+  ];
+  status.style.display='block';
+  analyzeBtn.disabled=true;
+  let i=0;
+  const run=()=>{
+    text.textContent=steps[i][0];
+    bar.style.width=steps[i][1]+'%';
+    if(i<steps.length-1){i++;setTimeout(run,650)}
+    else{analyzeBtn.disabled=false}
+  };
+  run();
+});
+
+document.getElementById('better').addEventListener('click',()=>{
+  result.style.display='block';
+  result.scrollIntoView({behavior:'smooth'});
+  document.getElementById('fixes').innerHTML=
+    '<li>Start with the strongest visual or curiosity point in the first 1–3 seconds.</li>'+
+    '<li>Remove or shorten weak sections after real timestamp analysis.</li>'+
+    '<li>Bring the strongest HPN forward as a teaser when it improves curiosity without misleading viewers.</li>';
+});
+
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tabcontent').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+function formatTime(s){
+  if(!isFinite(s))return 'Unknown duration';
+  const m=Math.floor(s/60),sec=Math.floor(s%60);
+  return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+}
+function copyEl(id){
+  const text=document.getElementById(id).innerText.trim();
+  if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert('Copied!'));
+  else alert('Copy is not supported in this browser.');
+}
+function copyAll(){
+  const out=[
+    'SHORTSLENS READY-TO-UPLOAD PACKAGE',
+    'BEST TITLE: '+document.getElementById('title').innerText,
+    'DESCRIPTION: '+document.getElementById('description').innerText,
+    'HASHTAGS: '+document.getElementById('hashtags').innerText,
+    'TAGS: '+document.getElementById('tags').innerText,
+    'HPN: '+document.getElementById('hpn').innerText,
+    'VOICE-OVER: '+document.getElementById('voiceText').innerText,
+    'EDITING: '+document.getElementById('editingPlan').innerText
+  ].join('\n\n');
+  if(navigator.clipboard)navigator.clipboard.writeText(out).then(()=>alert('Full package copied!'));
+}
+</script>
+</body>
+      </html>
